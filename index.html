@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Startup Homepage</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 class="logo">Startup</h1>
+            <nav>
+                <ul class="nav-links">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">About</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">&#9776;</div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h2>Welcome to Our Startup</h2>
+                <p>We build innovative solutions that scale with your business.</p>
+                <a class="cta" href="#">Learn More</a>
+                <!-- primary call-to-action button that will trigger a JS alert -->
+                <button id="alertButton" class="cta">Click Me!</button>
+            </div>
+        </section>
+        <section class="features">
+            <div class="container">
+                <div class="feature-item">
+                    <h3>Feature One</h3>
+                    <p>Short description of the feature.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Feature Two</h3>
+                    <p>Short description of the feature.</p>
+                </div>
+                <div class="feature-item">
+                    <h3>Feature Three</h3>
+                    <p>Short description of the feature.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- contact form section -->
+        <section class="contact">
+            <div class="container">
+                <h2>Contact Us</h2>
+                <form id="contactForm" novalidate>
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" name="name" required>
+                        <span class="error" id="nameError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                        <span class="error" id="emailError"></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" name="message" rows="4" required></textarea>
+                        <span class="error" id="messageError"></span>
+                    </div>
+                    <button type="submit" class="cta">Send Message</button>
+                    <p class="success" id="formSuccess"></p>
+                </form>
+            </div>
+        </section>
+
+        <!-- product list section -->
+        <section class="products">
+            <div class="container">
+                <h2>Our Products</h2>
+                <ul id="productList">
+                    <li>Product A</li>
+                    <li>Product B</li>
+                </ul>
+                <button id="addItem" class="cta">Add Item</button>
+                <button id="removeItem" class="cta">Remove Last Item</button>
+            </div>
+        </section>
+
+        <!-- modal trigger and structure -->
+        <section class="modal-section">
+            <div class="container">
+                <button id="openModal" class="cta">Open Modal</button>
+            </div>
+        </section>
+
+        <!-- modal markup -->
+        <div id="myModal" class="modal">
+            <div class="modal-content">
+                <span class="close-button" id="closeModal">&times;</span>
+                <h2>Announcement</h2>
+                <p>This is a notification modal. Click outside or the X to close.</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Startup Company. All rights reserved.</p>
+            <p>1234 Innovation Drive &bull; Anytown, USA</p>
+        </div>
+    </footer>
+
+    <script>
+        // simple toggle for mobile nav
+        document.querySelector('.menu-toggle').addEventListener('click', function() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        });
+
+        // interactive CTA button behavior
+        var alertBtn = document.getElementById('alertButton');
+        if (alertBtn) {
+            alertBtn.addEventListener('click', function(event) {
+                event.preventDefault();
+                alert('Thanks for clicking! Our team will reach out soon.');
+            });
+        }
+
+        // Contact form validation logic
+        var form = document.getElementById('contactForm');
+        var nameField = document.getElementById('name');
+        var emailField = document.getElementById('email');
+        var messageField = document.getElementById('message');
+
+        var nameError = document.getElementById('nameError');
+        var emailError = document.getElementById('emailError');
+        var messageError = document.getElementById('messageError');
+        var formSuccess = document.getElementById('formSuccess');
+
+        function isValidEmail(email) {
+            var re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            nameError.textContent = '';
+            emailError.textContent = '';
+            messageError.textContent = '';
+            formSuccess.textContent = '';
+
+            var valid = true;
+
+            if (nameField.value.trim() === '') {
+                nameError.textContent = 'Please enter your name.';
+                valid = false;
+            }
+            if (emailField.value.trim() === '') {
+                emailError.textContent = 'Please enter your email.';
+                valid = false;
+            } else if (!isValidEmail(emailField.value.trim())) {
+                emailError.textContent = 'Please enter a valid email address.';
+                valid = false;
+            }
+            if (messageField.value.trim() === '') {
+                messageError.textContent = 'Please enter a message.';
+                valid = false;
+            }
+
+            if (valid) {
+                formSuccess.textContent = 'Thank you! Your message has been sent.';
+                form.reset();
+            }
+        });
+
+        // Dynamic product list management
+        var productList = document.getElementById('productList');
+        var addButton = document.getElementById('addItem');
+        var removeButton = document.getElementById('removeItem');
+
+        addButton.addEventListener('click', function() {
+            var newItem = document.createElement('li');
+            newItem.textContent = 'New Product';
+            productList.appendChild(newItem);
+        });
+
+        removeButton.addEventListener('click', function() {
+            if (productList.lastElementChild) {
+                productList.removeChild(productList.lastElementChild);
+            }
+        });
+
+        // Modal popup logic
+        var modal = document.getElementById('myModal');
+        var openModalBtn = document.getElementById('openModal');
+        var closeModalBtn = document.getElementById('closeModal');
+
+        // open when button clicked
+        openModalBtn.addEventListener('click', function() {
+            modal.style.display = 'block';
+        });
+
+        // close when X clicked
+        closeModalBtn.addEventListener('click', function() {
+            modal.style.display = 'none';
+        });
+
+        // close when clicking outside modal content
+        window.addEventListener('click', function(event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
